@@ -1,0 +1,6 @@
+{
+        "manifest_version": 2,
+        "name": "SecondConscience Extension",
+        "description": "The software analyzes messages to decide if it correlates to common cyber bullying statements and sentiment.",
+        "version": "1.0"
+}
