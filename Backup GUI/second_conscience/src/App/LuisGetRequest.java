@@ -1,8 +1,5 @@
 package App;
 
-/**
- * Created by emilyhowing on 3/27/18.
- */
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -15,19 +12,22 @@ public class LuisGetRequest {
 
     private static final String USER_AGENT = "Mozilla/5.0";
 
-    public static void main(String[] args) throws Exception {
-
-        HttpUrlConnect http = new HttpUrlConnect();
-
-        System.out.println("Testing 1 - Send Http GET request");
-        System.out.println(http.sendGet("you a hoe"));
-
-    }
-
-    // HTTP GET request
+    /**
+     * Connects and sends a message for analysis to the LUIS API to determine
+     *  if the message contains bullying sentiment.
+     *
+     * @param   query - String to be analyzed
+     * @return  response - String containing the analysis response from LUIS
+     * @throws  Exception
+     *
+     */
     static public String sendGet(String query) throws Exception {
 
-        String url = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/84b1f33f-ec76-4539-a01e-1d0dada1f10a?subscription-key=20d2344d1a06408caa9465dc4bd4d380&spellCheck=true&bing-spell-check-subscription-key=4946a79341fa49268fb57c4a01aa1166&verbose=true&timezoneOffset=0&q=";
+        // URL to connect to the bot
+        String url = "https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/"
+                   + "84b1f33f-ec76-4539-a01e-1d0dada1f10a?subscription-key=20d2344d1a06408caa9465dc4bd4d380"
+                   + "&spellCheck=true&bing-spell-check-subscription-key=4946a79341fa49268fb57c4a01aa1166"
+                   + "&verbose=true&timezoneOffset=0&q=";
 
         // Remove the spaces and replace them with '%20'
         String[] splitArray = query.split("\\s+");
@@ -36,35 +36,25 @@ public class LuisGetRequest {
         // Append the query to our bot url
         url += newQuery;
 
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        URL URLobj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) URLobj.openConnection();
 
-        // optional default is GET
+        // Optional default is GET
         con.setRequestMethod("GET");
 
-        //add request header
+        // Add request header
         con.setRequestProperty("User-Agent", USER_AGENT);
 
-        int responseCode = con.getResponseCode();
-        // System.out.println("\nSending 'GET' request to URL : " + url);
-        // System.out.println("Response Code : " + responseCode);
-
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(con.getInputStream()));
+        // Build the response string
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String inputLine;
         StringBuffer response = new StringBuffer();
 
         while ((inputLine = in.readLine()) != null) {
-            // System.out.println(inputLine);
             response.append(inputLine);
         }
         in.close();
 
-        //print result
-//        System.out.println(response.toString().getClass().getName());
-//        System.out.println(response);
-
         return response.toString();
-
     }
 }

@@ -1,8 +1,5 @@
 package App;
 
-/**
- * Created by emilyhowing on 3/27/18.
- */
 import com.sun.deploy.util.StringUtils;
 
 import java.io.BufferedReader;
@@ -16,16 +13,6 @@ import javax.net.ssl.HttpsURLConnection;
 public class HttpUrlConnect {
 
     private final String USER_AGENT = "Mozilla/5.0";
-
-    // public static void main(String[] args) throws Exception {
-    //
-    // 	HttpURLConnect http = new HttpURLConnect();
-    //
-    // 	System.out.println("Testing 1 - Send Http GET request");
-    // 	// System.out.println(http.sendGet("you a hoe"));
-    //   System.out.println(findScore(http.sendGet("you a hoe")));
-    //
-    // }
 
     // HTTP GET request
     public String sendGet(String query) throws Exception {
@@ -45,12 +32,8 @@ public class HttpUrlConnect {
         // optional default is GET
         con.setRequestMethod("GET");
 
-        //add request header
+        // add request header
         con.setRequestProperty("User-Agent", USER_AGENT);
-
-        // int responseCode = con.getResponseCode();
-        // System.out.println("\nSending 'GET' request to URL : " + url);
-        // System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -58,24 +41,17 @@ public class HttpUrlConnect {
         StringBuffer response = new StringBuffer();
 
         while ((inputLine = in.readLine()) != null) {
-            // System.out.println(inputLine);
             response.append(inputLine);
         }
         in.close();
 
-        //print result
-        // System.out.println(response.toString().getClass().getName());
-//        System.out.println(response);
-
         String ret = response.toString();
 
         return ret;
-
     }
 
     public static float findScore(String input) {
         int scoreIndexStart = input.indexOf("score") + 8;
-        //System.out.println(input);
         int idx = scoreIndexStart+2;
         while (Character.isDigit(input.charAt(idx))) {
             idx++;
@@ -90,10 +66,6 @@ public class HttpUrlConnect {
     public static String findTopIntent(String input) {
         int intentIdxStart = input.indexOf("intent") + 10;
         int intentIdxEnd = input.indexOf("\"", intentIdxStart);
-//        System.out.println(input.substring(intentIdxStart, intentIdxEnd));
         return input.substring(intentIdxStart, intentIdxEnd);
     }
-
-
-
 }

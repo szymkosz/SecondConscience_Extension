@@ -9,10 +9,10 @@ import java.awt.event.ActionListener;
  * Created by emilyhowing on 3/27/18.
  */
 public class App {
+    // Maximum negative sentiment score
     float sentimentThreshold = (float) 0.20;
+    // Minimum LUIS match
     float minLUISMatchScore = (float) 0.85;
-
-
 
     void ButtonWork(){
         JFrame f = new JFrame("Button");
@@ -38,28 +38,26 @@ public class App {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                // Capture the message and analyze sentiment
                 String message = textfield.getText();
                 float score = conscience(message);
-                if(score < sentimentThreshold){
+
+                // If the score falls below the negative sentiment threshold
+                if (score < sentimentThreshold) {
+
+                    // Have to catch the exceptions thrown eventually...
                     try {
                         String LUISResponse = LuisGetRequest.sendGet(message);
-//                        System.out.print("\n\n\ntest\n\n\n");
-//                        System.out.println(LUISResponse);
-//                        System.out.print("\n\n\ntest\n\n\n");
                         String topIntent = HttpUrlConnect.findTopIntent(LUISResponse);
                         float newScore = HttpUrlConnect.findScore(LUISResponse);
-                        System.out.println("\n\n"+topIntent+"\n");
-                        System.out.println("\n\n"+newScore+"\n");
                         if (newScore > minLUISMatchScore && !topIntent.equals("None")) {
                             label1.setText("bullying detected");
                         }
-//                        System.out.println("\n\nscore:" + newScore);
                     } catch (Exception ex) {
                         System.out.println("LuisGetRequest failed");
                         System.out.println(ex.getMessage());
                     }
                 }
-
             }
         });
     }
